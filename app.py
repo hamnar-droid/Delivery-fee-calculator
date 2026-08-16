@@ -23,11 +23,15 @@ st.markdown("""
     }
     .bill-card {
         background-color: #ffffff;
+        color: #262626;
         border-radius: 16px;
         padding: 1.2em;
         margin-top: 1em;
         box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
         border-left: 6px solid #ff8fa3;
+    }
+    .bill-card h4, .bill-card p, .bill-card b {
+        color: #262626 !important;
     }
     </style>
 """, unsafe_allow_html=True)
