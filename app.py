@@ -1,13 +1,14 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
+import textwrap
 
 # ------------------ Page setup ------------------
 st.set_page_config(page_title="Parcel Waybill — Delivery Fee Calculator", page_icon="📮", layout="centered")
 
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+st.markdown(textwrap.dedent("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
 
     .stApp {
         background-color: #E4D5B7;
@@ -216,8 +217,8 @@ st.markdown("""
     div[data-testid="stDataFrame"] {
         border: 1px solid #C7B68C;
     }
-    </style>
-""", unsafe_allow_html=True)
+</style>
+"""), unsafe_allow_html=True)
 
 st.markdown('<p class="waybill-header">Parcel waybill</p>', unsafe_allow_html=True)
 st.markdown('<p class="waybill-sub">DELIVERY FEE CALCULATOR &nbsp;·&nbsp; PESHAWAR DEPOT</p>', unsafe_allow_html=True)
@@ -289,40 +290,41 @@ if st.session_state.bills:
     latest = st.session_state.bills[-1]
     fragile_tag_html = '<div class="fragile-tag">FRAGILE</div>' if latest["Fragile"] == "Yes" else ""
 
-    st.markdown(f"""
-        <div class="receipt">
-            <div class="receipt-top">
-                <div>
-                    <div class="receipt-title">{latest['Customer']}</div>
-                    <div class="receipt-track">TRACKING NO. {latest['Tracking']}</div>
-                </div>
-                {fragile_tag_html}
-            </div>
-            <div class="receipt-grid">
-                <div>
-                    <div class="receipt-field-label">Weight</div>
-                    <div class="receipt-field-value">{latest['Weight (kg)']} kg</div>
-                </div>
-                <div>
-                    <div class="receipt-field-label">Distance</div>
-                    <div class="receipt-field-value">{latest['Distance (km)']} km</div>
-                </div>
-            </div>
-            <div class="receipt-totals">
-                <div class="receipt-line"><span>Base cost</span><span>${latest['Base Cost ($)']}</span></div>
-                <div class="receipt-line"><span>Surcharge</span><span>${latest['Surcharge ($)']}</span></div>
-                <div class="receipt-total-final">
-                    <span class="label">Total due</span>
-                    <span class="value">${latest['Final Bill ($)']}</span>
-                </div>
-                <div class="postmark">
-                    <div class="postmark-inner">
-                        <span>PAID<br>{date.today().strftime('%d %b')}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+    receipt_html = (
+        '<div class="receipt">'
+        '<div class="receipt-top">'
+        '<div>'
+        f'<div class="receipt-title">{latest["Customer"]}</div>'
+        f'<div class="receipt-track">TRACKING NO. {latest["Tracking"]}</div>'
+        '</div>'
+        f'{fragile_tag_html}'
+        '</div>'
+        '<div class="receipt-grid">'
+        '<div>'
+        '<div class="receipt-field-label">Weight</div>'
+        f'<div class="receipt-field-value">{latest["Weight (kg)"]} kg</div>'
+        '</div>'
+        '<div>'
+        '<div class="receipt-field-label">Distance</div>'
+        f'<div class="receipt-field-value">{latest["Distance (km)"]} km</div>'
+        '</div>'
+        '</div>'
+        '<div class="receipt-totals">'
+        f'<div class="receipt-line"><span>Base cost</span><span>${latest["Base Cost ($)"]}</span></div>'
+        f'<div class="receipt-line"><span>Surcharge</span><span>${latest["Surcharge ($)"]}</span></div>'
+        '<div class="receipt-total-final">'
+        '<span class="label">Total due</span>'
+        f'<span class="value">${latest["Final Bill ($)"]}</span>'
+        '</div>'
+        '<div class="postmark">'
+        '<div class="postmark-inner">'
+        f'<span>PAID<br>{date.today().strftime("%d %b")}</span>'
+        '</div>'
+        '</div>'
+        '</div>'
+        '</div>'
+    )
+    st.markdown(receipt_html, unsafe_allow_html=True)
 
 # ------------------ Full history table ------------------
 if len(st.session_state.bills) > 1:
