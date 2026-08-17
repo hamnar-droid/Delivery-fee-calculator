@@ -2,7 +2,7 @@
 
 A Streamlit app styled like a parcel shipping label, built for the *Practical Task: Delivery Fee Calculator* assignment. Every calculation gets stamped with a tracking number and a postmark, like a real waybill receipt.
 
-🔗 **Live app:** _add your Streamlit link here_
+🔗 **Live app:** https://delivery-fee-calculator-dpg9pipt8iwd4k266w7mes.streamlit.app/
 
 ## What it does
 
